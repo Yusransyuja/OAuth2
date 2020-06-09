@@ -7,27 +7,11 @@ import org.springframework.security.oauth2.config.annotation.configurers.ClientD
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
-import org.springframework.security.oauth2.provider.token.TokenStore;
 
 @Configuration
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter{
-
-	static final String CLIEN_ID = "ucan12345";
-	static final String CLIENT_SECRET = "ucan12345";
-	static final String GRANT_TYPE = "password";
-	static final String AUTHORIZATION_CODE = "authorization_code";
-	static final String REFRESH_TOKEN = "refresh_token";
-	static final String IMPLICIT = "implicit";
-	static final String SCOPE_READ = "read";
-	static final String SCOPE_WRITE = "write";
-	static final String TRUST = "trust";
-	static final int ACCESS_TOKEN_VALIDITY_SECONDS = 1*60*60;
-    static final int FREFRESH_TOKEN_VALIDITY_SECONDS = 6*60*60;
     
-    @Autowired
-	private TokenStore tokenStore;
-
 	@Autowired
 	private AuthenticationManager authenticationManager;
 	
@@ -36,17 +20,16 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
 		configurer
 				.inMemory()
-				.withClient(CLIEN_ID)
-				.secret(CLIENT_SECRET)
-				.authorizedGrantTypes(GRANT_TYPE, AUTHORIZATION_CODE, REFRESH_TOKEN, IMPLICIT )
-				.scopes(SCOPE_READ, SCOPE_WRITE, TRUST)
-				.accessTokenValiditySeconds(ACCESS_TOKEN_VALIDITY_SECONDS).
-				refreshTokenValiditySeconds(FREFRESH_TOKEN_VALIDITY_SECONDS);
+				.withClient("ucans11")
+				.secret("{noop}password")
+				.authorizedGrantTypes("password", "authorization_code", "refresh_token")
+				.scopes("read", "write")
+				.accessTokenValiditySeconds(120)
+	            .refreshTokenValiditySeconds(240000);
 	}
 
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-		endpoints.tokenStore(tokenStore)
-				.authenticationManager(authenticationManager);
+		endpoints.authenticationManager(authenticationManager);
 	}
 }
