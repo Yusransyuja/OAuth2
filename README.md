@@ -4,7 +4,6 @@ Configure OAuth2 for services in spring boot.
 Oauth2 have some of configuration with detail below :
   1. Authorization Server
   2. Resource Server
-  3. Security Configure Adapter
   
 # Attention
 
